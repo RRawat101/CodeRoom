@@ -1,0 +1,10 @@
+.user-entry {
+    background-color: #f0f0f0; /* Background color for the container */
+    border-radius: 8px; /* Rounded corner radius */
+    padding: 8px 12px; /* Padding around the username */
+    font-size: 16px; /* Font size for the username */
+    font-weight: bold; /* Bold font weight */
+    color: #333; /* Text color */
+    margin: 12px;
+  }
+  

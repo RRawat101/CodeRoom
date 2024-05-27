@@ -1,0 +1,18 @@
+{
+  "name": "codeserver",
+  "version": "1.0.0",
+  "description": "livecodesharing backend",
+  "main": "index.js",
+  "scripts": {
+    "startserver": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "RR",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.1",
+    "socket.io": "^4.7.5"
+  }
+}
