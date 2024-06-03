@@ -1,16 +1,11 @@
-import { useEffect, useState, useRef, useContext } from "react";
+import { useEffect, useState, useRef } from "react";
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import Panel from  "./Panel"
-import CodeOutput from "./CodeOutput";
-import { CodeEditorContext } from "./codeEditorProvider";
-// import './codeEditor.css'
 
-function CodeEditor() {
 
-  const {codeEditorSocket}=useContext(CodeEditorContext);
+function CodeEditor({socket}) {
+
   const [code, setCode] = useState("function add(a, b) {\n  return a + b;\n}");
-  const socket=codeEditorSocket;
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -32,14 +27,11 @@ function CodeEditor() {
                 style={{ fontSize: "32px", textAlign: "left" }}
                 value={code}
                 onChange={handleCodeChange}
-                height="60vh"
+                height="80vh"
                 width="70vw"
                 theme={'dark'}
                 extensions={[javascript({ jsx: true })]}
             />
-            <Panel/>
-            <CodeOutput/>
-
         </>
     );
 }

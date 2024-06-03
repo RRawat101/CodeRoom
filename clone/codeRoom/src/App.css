@@ -1,0 +1,20 @@
+.App {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .container {
+    display: flex;
+    
+  }
+  
+  .code-editor {
+    flex: 1;
+    margin-right: 10px; /* Adjust margin as needed */
+  }
+  
+  .user-list {
+    flex: 1;
+    margin-left: 10px; /* Adjust margin as needed */
+  }
+  
