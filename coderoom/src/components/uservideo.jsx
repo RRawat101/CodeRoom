@@ -2,8 +2,12 @@
 import React from 'react';
 import './User.css'
 import {useState,useRef} from 'react';
+im
 function User({ name }) {
 
+  useEffect(()=>{
+
+  })
 
 
   return (

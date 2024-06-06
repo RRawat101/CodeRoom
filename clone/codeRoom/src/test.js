@@ -1,5 +1,6 @@
-const io =require( 'socket.io-client');
+const  { loadLanguage, langNames, langs }= require( '@uiw/codemirror-extensions-langs');
 
+loadLanguage('tsx');
+langs.tsx();
 
-const socket = io('http://localhost:5000');
-// socket.emit('connected');
+console.log('langNames:', langNames); // => "jsx" | "typescript" | "javascript" | "tsx"

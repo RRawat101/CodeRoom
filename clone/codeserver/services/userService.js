@@ -1,5 +1,3 @@
-// userService.js
-
 let users = {};
 
 function addUser(socketId, userInfo) {
@@ -14,4 +12,12 @@ function getUsers() {
   return Object.values(users);
 }
 
-module.exports = { addUser, removeUser, getUsers };
+function getUsersInRoom(roomId) {
+  return Object.values(users).filter(user => user.roomId === roomId);
+}
+
+function getRoomBySocketId(socketId) {
+  return users[socketId] ? users[socketId].roomId : null;
+}
+
+module.exports = { addUser, removeUser, getUsers, getUsersInRoom, getRoomBySocketId };

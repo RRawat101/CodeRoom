@@ -1,17 +1,20 @@
 import React from 'react';
 import User from './User';
-import { useState, useEffect } from 'react';
+import { useContext,useEffect } from 'react';
+import { userContext } from '../provider/userProvider';
 
 
-function UserList({ socket }) {
+function UserList() {
 
-    const [users, setUsers] = useState([]);
+    const {socket,users,setUsers} = useContext(userContext);
+    console.log(socket.id);
+
     useEffect(() => {
         // const username = prompt('Please enter your name:'); // Prompt user to enter their name
         // if (username) {
         //     socket.emit('addUser', username); // Emit username to the server if it's not empty
         // }
-        socket.emit('addUser', ''); // Sending only the name as a string
+        socket.emit('joinRoom', {roomId:"11oneo1",userinfo:""}); // Sending only the name as a string
 
         socket.on('usersChange', (newUsers) => {
             setUsers(newUsers);
