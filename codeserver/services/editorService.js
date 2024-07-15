@@ -5,26 +5,25 @@ const {getRoomBySocketId,getUsersInRoom,addUser,removeUser,getUsers} = require( 
 const initializeEditorSocket = (io) => {
   // console.log(io);
   const codeEditorSocket = io.of('/codeeditor');
-  // console.log(codeEditorSocket);cls
   codeEditorSocket.on('connection', (socket) => {
 
     console.log('Client connected');
 
     // console.log(socket);
-    socket.on('joinRoom', ({ roomId, userInfo }) => {
+    socket.on('joinRoom', ({ roomId, userId }) => {
       socket.join(roomId);
-      const randomUsername = `user#${Math.floor(Math.random() * 1000)}`;
-      addUser(socket.id, { name: randomUsername, roomId });
-      codeEditorSocket.to(roomId).emit('usersChange', getUsersInRoom(roomId));
-      console.log(`User ${randomUsername} joined room ${roomId}`);
+      
+      addUser(socket.id, { userId, roomId });
+      console.log(`User ${userId} joined room ${roomId}`);
+      socket.broadcast.to(roomId).emit('user-connected', userId);
     });
 
     socket.on('leaveRoom', ({ roomId }) => {
       console.log("leaverequest on",roomId,socket.id)
       socket.leave(roomId);
       removeUser(socket.id);
-      codeEditorSocket.to(roomId).emit('usersChange', getUsersInRoom(roomId));
       console.log(`User left room ${roomId}`);
+      socket.broadcast.to(roomId).emit('user-disconnected', userId);
     });
 
     socket.on('codeChange', (newCode) => {

@@ -11,12 +11,13 @@ const CodeEditorProvider = ({ children, socket }) => {
   const [inputValue, setInput] = useState('');
   const [output, setOutput] = useState(`testvalue`);
   const [language,setLanguage]=useState('python');
+  const [ROOM_ID,setRoomID]=useState('11one11');
   return (
     <CodeEditorContext.Provider value={
       { 
         code, setCode, inputValue, setInput, output, setOutput, socket,
-        language, setLanguage
-
+        language, setLanguage,
+        ROOM_ID, setRoomID
       }
       }>
       {children}

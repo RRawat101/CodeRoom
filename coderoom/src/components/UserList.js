@@ -1,33 +1,81 @@
 import React from 'react';
-import User from './User';
+import { io } from 'socket.io-client';
+import Peer  from 'peerjs';
 import { useContext,useEffect } from 'react';
-import { userContext } from '../provider/userProvider';
+import { CodeEditorContext } from '../provider/codeEditorProvider';
+import './userlist.css';
+
 
 
 function UserList() {
 
-    const {socket,users,setUsers} = useContext(userContext);
-    console.log(socket.id);
+    const {ROOM_ID,socket} = useContext(CodeEditorContext);
+    // console.log(socket.id);
 
     useEffect(() => {
-        // const username = prompt('Please enter your name:'); // Prompt user to enter their name
-        // if (username) {
-        //     socket.emit('addUser', username); // Emit username to the server if it's not empty
-        // }
-        socket.emit('joinRoom', {roomId:"11oneo1",userinfo:""}); // Sending only the name as a string
-
-        socket.on('usersChange', (newUsers) => {
-            setUsers(newUsers);
-        });
+        const videoGrid = document.getElementById('video-grid');
+        const myVideo = document.createElement('video')
+        myVideo.muted = true;
+        const myPeer = new Peer(undefined, {
+          host: 'localhost',
+          port: 9000,
+          path: '/'
+      });
+        const peers = {}
+        
+        function connectToNewUser(userId, stream) {
+          const call = myPeer.call(userId, stream)
+          const video = document.createElement('video');
+          video.setAttribute('style', '{width: 100%; height: 100%; object-fit: cover;}');
+          call.on('stream', userVideoStream => {
+              addVideoStream(video, userVideoStream)
+          })
+          call.on('close', () => {
+              video.remove();
+          })
+        
+          peers[userId] = call
+        }
+        
+        function addVideoStream(video, stream) {
+            video.srcObject = stream
+            video.addEventListener('loadedmetadata', () => {
+                video.play()
+        })
+        videoGrid.append(video)
+        }
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+          }).then(stream => {
+            addVideoStream(myVideo, stream)
+          
+            myPeer.on('call', call => {
+              call.answer(stream)
+              const video = document.createElement('video')
+              call.on('stream', userVideoStream => {
+                addVideoStream(video, userVideoStream)
+              })
+            })
+          
+            socket.on('user-connected', userId => {
+              connectToNewUser(userId, stream)
+            })
+          })
+          
+            socket.on('user-disconnected', userId => {
+                if (peers[userId]) peers[userId].close()
+            })
+          
+          myPeer.on('open', id => {
+            socket.emit('joinRoom', {roomId:ROOM_ID, userId:id})
+          })
 
     }, []);
 
     return (
         <div className="user-list">
-        <h2>Users in the Room:</h2>
-        {users.map((user, index) => (
-            <User key={index} name={user} />
-        ))}
+            <div id="video-grid"></div>
         </div>
     );
 }

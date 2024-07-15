@@ -1,40 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import CodeEditor from './components/CodeEditor';
 import UserList from './components/UserList';
-import './App.css'; // Import the CSS file
-import { UserProvider } from './provider/userProvider';
+import './App.css';
 import { CodeEditorProvider } from './provider/codeEditorProvider';
-import io,{Manager} from 'socket.io-client';
+import io from 'socket.io-client';
 
-const opts={
-}
-
-const Socket = io("http://localhost:5000/codeeditor"); // Connect to code-editor namespace
-// const codeEditorSocket = io("http://localhost:5000/codeeditor"); // Connect to code-editor namespace
-// const userSocket = io("http://localhost:5000/user",{...opts}); // Connect to user namespace
-
+const socket = io("http://localhost:5000/codeeditor");
 
 function App() {
-  // useEffect(() => {
-  //   console.log('CodeEditor namespace connected:', codeEditorSocket.id);
-  //   console.log('User namespace connected:', userSocket.id);
-  // }, []);
-
   return (
     <div className="App">
+      <CodeEditorProvider socket={socket}>
       <h1>Live Code Sharing Platform</h1>
       <div className="container">
-        <div className="code-editor">
-          <CodeEditorProvider socket={Socket}>
+        <div className="code-editor">          
             <CodeEditor />
-          </CodeEditorProvider>
         </div>
         <div className="user-list">
-          <UserProvider socket={Socket}>
+          <h2>Users in the room</h2>
             <UserList />
-          </UserProvider>
         </div>
       </div>
+      </CodeEditorProvider>
     </div>
   );
 }

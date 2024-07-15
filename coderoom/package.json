@@ -17,6 +17,8 @@
     "codemirror": "^5.65.16",
     "cors": "^2.8.5",
     "navigator": "^1.0.1",
+    "peer": "^1.0.2",
+    "peerjs": "^1.5.4",
     "react": "^18.2.0",
     "react-codemirror2": "^8.0.0",
     "react-copy-to-clipboard": "^5.1.0",
